@@ -9,13 +9,16 @@ import { appendLeadRow, isSheetsConfigured } from "@/lib/google/sheets";
 import { sendBrochureDownloadEmails } from "@/lib/email/sendLeadEmails";
 import { isEmailConfigured } from "@/lib/email/mailer";
 
-const BROCHURE_FILE_URL = "/downloads/Nepal-Buildcon-Expo-Brochure-2027.pdf";
+const BROCHURE_FILE_URL =
+  "/downloads/12th_Nepal_Buildcon_International_Expo_2027_Brochure.pdf";
 
 // Google reCAPTCHA v2 Server Verification
 async function verifyRecaptcha(token: string) {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
   if (!secretKey) {
-    console.warn("RECAPTCHA_SECRET_KEY missing. Skipping recaptcha verification.");
+    console.warn(
+      "RECAPTCHA_SECRET_KEY missing. Skipping recaptcha verification.",
+    );
     return true;
   }
 
@@ -38,7 +41,7 @@ export async function POST(req: NextRequest) {
   if (isRateLimited(`brochure:${ip}`)) {
     return NextResponse.json(
       { error: "Too many submissions. Please try again later." },
-      { status: 429 }
+      { status: 429 },
     );
   }
 
@@ -46,30 +49,35 @@ export async function POST(req: NextRequest) {
   try {
     rawBody = await req.json();
   } catch {
-    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid request body" },
+      { status: 400 },
+    );
   }
 
   // 1. Verify Google reCAPTCHA v2
-  const body = typeof rawBody === "object" && rawBody !== null
-    ? rawBody as Record<string, unknown>
-    : {};
-  const recaptchaToken = typeof body.recaptchaToken === "string"
-    ? body.recaptchaToken
-    : typeof body["g-recaptcha-response"] === "string"
-      ? body["g-recaptcha-response"]
-      : "";
+  const body =
+    typeof rawBody === "object" && rawBody !== null
+      ? (rawBody as Record<string, unknown>)
+      : {};
+  const recaptchaToken =
+    typeof body.recaptchaToken === "string"
+      ? body.recaptchaToken
+      : typeof body["g-recaptcha-response"] === "string"
+        ? body["g-recaptcha-response"]
+        : "";
   if (process.env.RECAPTCHA_SECRET_KEY) {
     if (!recaptchaToken) {
       return NextResponse.json(
         { error: "Please verify that you are not a robot." },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const isHuman = await verifyRecaptcha(recaptchaToken);
     if (!isHuman) {
       return NextResponse.json(
         { error: "reCAPTCHA verification failed. Please try again." },
-        { status: 400 }
+        { status: 400 },
       );
     }
   }
@@ -78,16 +86,25 @@ export async function POST(req: NextRequest) {
   const parsed = brochureDownloadSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Please check the highlighted fields.", issues: parsed.error.issues },
-      { status: 400 }
+      {
+        error: "Please check the highlighted fields.",
+        issues: parsed.error.issues,
+      },
+      { status: 400 },
     );
   }
 
   const data = parsed.data;
 
   // Bot Trap Check
-  if (data.website_hp || (data.startedAt && Date.now() - data.startedAt < MIN_SUBMIT_MS)) {
-    return NextResponse.json({ success: true, referenceId: generateReferenceId("BRCH") });
+  if (
+    data.website_hp ||
+    (data.startedAt && Date.now() - data.startedAt < MIN_SUBMIT_MS)
+  ) {
+    return NextResponse.json({
+      success: true,
+      referenceId: generateReferenceId("BRCH"),
+    });
   }
 
   const referenceId = generateReferenceId("BRCH");
@@ -98,7 +115,7 @@ export async function POST(req: NextRequest) {
     if (!conn) throw new Error("Database connection unavailable");
 
     await BrochureDownload.create({
-         referenceId,
+      referenceId,
       name: data.name,
       company: data.company,
       country: data.country,
@@ -111,8 +128,11 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("BrochureDownload save failed:", safeDbErrorMessage(err));
     return NextResponse.json(
-      { error: "We couldn't process your request right now. Please try again in a moment." },
-      { status: 503 }
+      {
+        error:
+          "We couldn't process your request right now. Please try again in a moment.",
+      },
+      { status: 503 },
     );
   }
 
@@ -120,7 +140,7 @@ export async function POST(req: NextRequest) {
   if (isSheetsConfigured()) {
     try {
       await appendLeadRow("Website Enquiries", {
-           referenceId,
+        referenceId,
         registerAs: "Brochure Download",
         name: data.name,
         company: data.company,
@@ -137,26 +157,42 @@ export async function POST(req: NextRequest) {
         utmCampaign: data.utm?.campaign ?? "",
         landingPage: data.landingPage ?? "",
       });
-      await BrochureDownload.updateOne({ referenceId }, { sheetsSyncStatus: "synced" });
+      await BrochureDownload.updateOne(
+        { referenceId },
+        { sheetsSyncStatus: "synced" },
+      );
     } catch (err) {
       console.error("Sheets sync failed", err);
-      await BrochureDownload.updateOne({ referenceId }, { sheetsSyncStatus: "failed" }).catch(() => {});
+      await BrochureDownload.updateOne(
+        { referenceId },
+        { sheetsSyncStatus: "failed" },
+      ).catch(() => {});
     }
   }
 
-// 5. Send Notification Email
+  // 5. Send Notification Email
   if (isEmailConfigured()) {
     try {
       await sendBrochureDownloadEmails({
         ...data,
         referenceId,
       });
-      await BrochureDownload.updateOne({ referenceId }, { emailStatus: "sent" });
+      await BrochureDownload.updateOne(
+        { referenceId },
+        { emailStatus: "sent" },
+      );
     } catch (err) {
       console.error("Brochure download email notification failed", err);
-      await BrochureDownload.updateOne({ referenceId }, { emailStatus: "failed" }).catch(() => {});
+      await BrochureDownload.updateOne(
+        { referenceId },
+        { emailStatus: "failed" },
+      ).catch(() => {});
     }
   }
 
-  return NextResponse.json({ success: true, referenceId, fileUrl: BROCHURE_FILE_URL });
+  return NextResponse.json({
+    success: true,
+    referenceId,
+    fileUrl: BROCHURE_FILE_URL,
+  });
 }

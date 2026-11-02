@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/downloads" },
 };
 
-const REPORT_PATH = "/downloads/Nepal-Buildcon-Post-Show-Report-2026.pdf";
+const REPORT_PATH = "/downloads/11th_Nepal_Buildcon_International_Expo_2026_Post_Show_Report.pdf";
 
 export default async function DownloadsPage() {
   const downloads = await getPublishedDownloads();
@@ -96,7 +96,7 @@ export default async function DownloadsPage() {
               {reportAvailable ? (
                 <a
                   href={REPORT_PATH}
-                  download="Nepal-Buildcon-Post-Show-Report-2026.pdf"
+                  download="11th_Nepal_Buildcon_International_Expo_2026_Post_Show_Report.pdf"
                   className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#982E21] px-5 py-3 text-[13px] font-bold text-white transition-colors hover:bg-[#7B241A] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#982E21]"
                 >
                   Download Post-Show Report

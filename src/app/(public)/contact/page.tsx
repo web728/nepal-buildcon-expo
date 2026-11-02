@@ -17,7 +17,7 @@ export default function ContactPage() {
   intro="Have a question about Nepal Buildcon International Expo 2027? Get in touch with our team for exhibition bookings, visitor information and general enquiries."
 
         image={{
-          src: "/images/gallery/nepal-buildcon-networking-01.jpg",
+          src: "/images/gallery/nep                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           al-buildcon-networking-01.jpg",
           alt: "Industry professionals speaking at a Nepal Buildcon exhibition",
         }}
       />
