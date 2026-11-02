@@ -253,15 +253,17 @@ export function Header() {
             aria-label={`${event.name} homepage`}
             className="relative z-10 flex shrink-0 items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#982E21]"
           >
-            <Image
-              src="/logos/12th_Nepal_Buildcon_International_Expo_2027.png"
-              alt={event.name}
-              width={580}
-              height={220}
-              priority
-              sizes="(min-width:1280px) 185px, (min-width:640px) 160px, 135px"
-              className="h-auto w-[135px] object-contain object-left transition-transform duration-300 hover:scale-[1.025] motion-reduce:transform-none sm:w-[160px] lg:w-[145px] xl:w-[185px]"
-            />
+          <div className="flex h-[55px] w-[125px] shrink-0 items-center overflow-hidden sm:h-[65px] sm:w-[160px] lg:h-[55px] lg:w-[135px] xl:h-[70px] xl:w-[185px]">
+  <Image
+    src="/logos/12th_Nepal_Buildcon_International_Expo_2027.png"
+    alt={event.name}
+    width={580}
+    height={200}
+    priority
+    sizes="(min-width:1280px) 185px, (min-width:640px) 160px, 125px"
+    className="h-full w-full object-contain object-left transition-transform duration-300 hover:scale-[1.025] motion-reduce:transform-none"
+  />
+</div>
           </Link>
 
           <nav
