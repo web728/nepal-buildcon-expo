@@ -53,7 +53,16 @@ const CONTACTS = [
 
 function ArrowUpRight() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-4 w-4"
+    >
       <path d="M7 17 17 7M8 7h9v9" />
     </svg>
   );
@@ -67,26 +76,47 @@ export function Footer() {
   return (
     <footer className="relative isolate overflow-hidden border-t border-white/10 bg-[#0B0C11] text-white selection:bg-[#982E21] selection:text-white">
       {/* Minimal, subtle Nepal-brand ambient lighting */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      >
         <div className="absolute -right-52 -top-56 h-[480px] w-[480px] rounded-full bg-[#982E21]/[0.08] blur-[110px]" />
         <div className="absolute -bottom-64 left-[10%] h-[420px] w-[420px] rounded-full bg-[#1C987A]/[0.06] blur-[115px]" />
       </div>
-      <div aria-hidden="true" className="h-[2px] bg-gradient-to-r from-[#982E21] via-[#1C987A] to-transparent" />
+      <div
+        aria-hidden="true"
+        className="h-[2px] bg-gradient-to-r from-[#982E21] via-[#1C987A] to-transparent"
+      />
 
       <Container className="relative z-10">
         {/* Brand and primary action */}
         <div className="grid gap-7 border-b border-white/10 py-9 md:grid-cols-[minmax(0,1.2fr)_minmax(0,.8fr)] md:items-center lg:py-11">
           <div className="min-w-0">
-            <Link href="/" aria-label={`${event.name} homepage`} className="inline-flex rounded-md bg-white px-3 py-2 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transform-none">
-              <Image src="/logos/nepal-buildcon-logo.png" alt={event.name} width={580} height={220} sizes="(min-width: 768px) 220px, 195px" className="h-auto w-[195px] object-contain md:w-[220px]" />
+            <Link
+              href="/"
+              aria-label={`${event.name} homepage`}
+              className="inline-flex rounded-md bg-white px-3 py-2 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transform-none"
+            >
+              <Image
+                src="/logos/12th_Nepal_Buildcon_International_Expo_2027.png"
+                alt={event.name}
+                width={580}
+                height={220}
+                sizes="(min-width: 768px) 220px, 195px"
+                className="h-auto w-[195px] object-contain md:w-[220px]"
+              />
             </Link>
             <p className="mt-4 max-w-[500px] text-[13px] leading-[1.8] text-white/65 sm:text-[14px]">
               {event.descriptor}
             </p>
             <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[12px] leading-5 text-white/75">
               <span>{event.dates.display}</span>
-              <span aria-hidden="true" className="text-white/25">/</span>
-              <span>{event.venue.name}, {event.venue.city}</span>
+              <span aria-hidden="true" className="text-white/25">
+                /
+              </span>
+              <span>
+                {event.venue.name}, {event.venue.city}
+              </span>
             </p>
           </div>
 
@@ -94,45 +124,47 @@ export function Footer() {
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#83D8C4]">
               Contact Our Representatives
             </p>
-         
-    
-<div className="mt-4 grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 md:gap-x-10">
-  {CONTACTS.map((contact) => (
-    <div
-      key={contact.company}
-      className="min-w-0 md:text-left"
-    >
-      {contact.phone && (
-        <a
-          href={`tel:${contact.phone.replace(/[^0-9+]/g, "")}`}
-          className="block whitespace-nowrap text-[13px] font-medium tabular-nums text-white/75 transition-colors hover:text-[#83D8C4]"
-        >
-          {contact.phone}
-        </a>
-      )}
 
-      {contact.email && (
-        <a
-          href={`mailto:${contact.email}`}
-          className="mt-1 block break-all text-[12px] leading-[1.6] text-white/55 transition-colors hover:text-[#83D8C4]"
-        >
-          {contact.email}
-        </a>
-      )}
-    </div>
-  ))}
-</div>
+            <div className="mt-4 grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 md:gap-x-10">
+              {CONTACTS.map((contact) => (
+                <div key={contact.company} className="min-w-0 md:text-left">
+                  {contact.phone && (
+                    <a
+                      href={`tel:${contact.phone.replace(/[^0-9+]/g, "")}`}
+                      className="block whitespace-nowrap text-[13px] font-medium tabular-nums text-white/75 transition-colors hover:text-[#83D8C4]"
+                    >
+                      {contact.phone}
+                    </a>
+                  )}
 
-        
+                  {contact.email && (
+                    <a
+                      href={`mailto:${contact.email}`}
+                      className="mt-1 block break-all text-[12px] leading-[1.6] text-white/55 transition-colors hover:text-[#83D8C4]"
+                    >
+                      {contact.email}
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Navigation — compatible with existing footerNav */}
-        <nav aria-label="Footer navigation" className="grid grid-cols-2 gap-x-6 gap-y-8 border-b border-white/10 py-9 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-7 lg:py-10">
+        <nav
+          aria-label="Footer navigation"
+          className="grid grid-cols-2 gap-x-6 gap-y-8 border-b border-white/10 py-9 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-7 lg:py-10"
+        >
           {NAV_GROUPS.map((group) => (
             <div key={group.title} className="min-w-0">
-              <h3 className="font-heading text-[13px] font-bold text-white">{group.title}</h3>
-              <div aria-hidden="true" className="mt-3 h-[2px] w-7 bg-[#1C987A]" />
+              <h3 className="font-heading text-[13px] font-bold text-white">
+                {group.title}
+              </h3>
+              <div
+                aria-hidden="true"
+                className="mt-3 h-[2px] w-7 bg-[#1C987A]"
+              />
               <ul className="mt-4 space-y-2.5">
                 {group.links?.map((item) => (
                   <li key={item.href}>
@@ -163,56 +195,58 @@ export function Footer() {
               Media Space Solutions
             </h3>
           </div>
-       
-<div className="flex items-center gap-3">
-  {/* Futurex Logo */}
-  <a
-    href="https://www.futurextrade.com/"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Futurex official website"
-    className="flex h-[52px] w-[130px] shrink-0 items-center justify-center rounded-md bg-white p-2.5 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transform-none"
-  >
-    <span className="relative h-full w-full">
-      <Image
-        src="/logos/futurex-logo.png"
-        alt="Futurex Trade Fair & Events"
-        fill
-        sizes="130px"
-        className="object-contain object-center"
-      />
-    </span>
-  </a>
 
-  {/* Media Space Solutions Logo */}
-  <a
-    href="https://mss.com.np/"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Media Space Solutions official website"
-    className="flex h-[52px] w-[130px] shrink-0 items-center justify-center rounded-md bg-white p-2.5 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transform-none"
-  >
-    <span className="relative h-full w-full">
-      <Image
-        src="/logos/media-space-logo.svg"
-        alt="Media Space Solutions"
-        fill
-        sizes="130px"
-        className="object-contain object-center"
-      />
-    </span>
-  </a>
-</div>
+          <div className="flex items-center gap-3">
+            {/* Futurex Logo */}
+            <a
+              href="https://www.futurextrade.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Futurex official website"
+              className="flex h-[52px] w-[130px] shrink-0 items-center justify-center rounded-md bg-white p-2.5 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transform-none"
+            >
+              <span className="relative h-full w-full">
+                <Image
+                  src="/logos/futurex-logo.png"
+                  alt="Futurex Trade Fair & Events"
+                  fill
+                  sizes="130px"
+                  className="object-contain object-center"
+                />
+              </span>
+            </a>
 
+            {/* Media Space Solutions Logo */}
+            <a
+              href="https://mss.com.np/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Media Space Solutions official website"
+              className="flex h-[52px] w-[130px] shrink-0 items-center justify-center rounded-md bg-white p-2.5 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transform-none"
+            >
+              <span className="relative h-full w-full">
+                <Image
+                  src="/logos/media-space-logo.svg"
+                  alt="Media Space Solutions"
+                  fill
+                  sizes="130px"
+                  className="object-contain object-center"
+                />
+              </span>
+            </a>
+          </div>
         </div>
 
         {/* Footer bottom: copyright left, social links right */}
         <div className="flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
             <p className="text-[11px] leading-5 text-white/50">
-              &copy; {new Date().getFullYear()} {event.name}. All rights reserved.
+              &copy; {new Date().getFullYear()} {event.name}. All rights
+              reserved.
             </p>
-            <p className="text-[11px] leading-5 text-white/35">{event.websiteDisplay}</p>
+            <p className="text-[11px] leading-5 text-white/35">
+              {event.websiteDisplay}
+            </p>
           </div>
           {SOCIAL_LINKS.length > 0 && (
             <div className="flex w-full items-center justify-end gap-2 sm:ml-auto sm:w-auto">
@@ -226,7 +260,12 @@ export function Footer() {
                   aria-label={social.label}
                   className="flex h-9 w-9 items-center justify-center rounded-md border border-white/15 text-white/65 transition-[border-color,background-color,color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#1C987A] hover:bg-[#1C987A]/15 hover:text-white motion-reduce:transform-none"
                 >
-                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-4 w-4"
+                  >
                     <path d={social.path} />
                   </svg>
                 </a>

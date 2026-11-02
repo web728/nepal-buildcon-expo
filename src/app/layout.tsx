@@ -101,8 +101,9 @@ const socialLinks = [
   event.social?.linkedin,
   event.social?.youtube,
   event.social?.twitter,
-].filter((value): value is string =>
-  typeof value === "string" && /^https?:\/\//i.test(value)
+].filter(
+  (value): value is string =>
+    typeof value === "string" && /^https?:\/\//i.test(value),
 );
 
 const globalSchema = {
@@ -113,7 +114,7 @@ const globalSchema = {
       "@id": `${SITE_URL}/#organizers`,
       name: "Nepal Buildcon International Expo",
       url: SITE_URL,
-      logo: `${SITE_URL}/logos/nepal-buildcon-logo.png`,
+      logo: `${SITE_URL}/logos/12th_Nepal_Buildcon_International_Expo_2027.png`,
       ...(socialLinks.length ? { sameAs: socialLinks } : {}),
     },
     {
@@ -146,8 +147,16 @@ const globalSchema = {
         },
       },
       organizer: [
-        { "@type": "Organization", name: "Futurex Trade Fair & Events Pvt. Ltd.", url: "https://www.futurextrade.com/" },
-        { "@type": "Organization", name: "Media Space Solutions Pvt. Ltd.", url: "https://mss.com.np/" },
+        {
+          "@type": "Organization",
+          name: "Futurex Trade Fair & Events Pvt. Ltd.",
+          url: "https://www.futurextrade.com/",
+        },
+        {
+          "@type": "Organization",
+          name: "Media Space Solutions Pvt. Ltd.",
+          url: "https://mss.com.np/",
+        },
       ],
     },
   ],
@@ -157,9 +166,15 @@ function stringifyJsonLd(value: unknown) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en" className={`${manrope.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${manrope.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
       <body className="flex min-h-screen flex-col bg-white text-brand-dark font-sans antialiased">
         <script
           type="application/ld+json"

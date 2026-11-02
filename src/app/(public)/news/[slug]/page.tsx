@@ -34,7 +34,9 @@ export default async function NewsArticlePage({
   const item = await getNewsBySlug(slug);
   if (!item) notFound();
 
-  const date = new Date(item.publishedAt as unknown as string).toLocaleDateString("en-GB", {
+  const date = new Date(
+    item.publishedAt as unknown as string,
+  ).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -46,12 +48,19 @@ export default async function NewsArticlePage({
     "@type": "NewsArticle",
     headline: item.title,
     description: item.seoDescription || item.excerpt,
-    datePublished: new Date(item.publishedAt as unknown as string).toISOString(),
-    image: item.featuredImageUrl ? [`${siteUrl}${item.featuredImageUrl}`] : undefined,
+    datePublished: new Date(
+      item.publishedAt as unknown as string,
+    ).toISOString(),
+    image: item.featuredImageUrl
+      ? [`${siteUrl}${item.featuredImageUrl}`]
+      : undefined,
     publisher: {
       "@type": "Organization",
       name: event.name,
-      logo: { "@type": "ImageObject", url: `${siteUrl}/logos/nepal-buildcon-logo.png` },
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/logos/12th_Nepal_Buildcon_International_Expo_2027.png`,
+      },
     },
     mainEntityOfPage: `${siteUrl}/news/${slug}`,
   };
@@ -62,21 +71,34 @@ export default async function NewsArticlePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticleJsonLd) }}
       />
-      <Breadcrumb items={[{ label: "News", href: "/news" }, { label: item.title }]} />
+      <Breadcrumb
+        items={[{ label: "News", href: "/news" }, { label: item.title }]}
+      />
       <Container className="max-w-3xl py-20 sm:py-24">
-        <p className="text-xs font-bold uppercase tracking-wide text-brand-blue">{item.category}</p>
-        <h1 className="mt-3 text-3xl font-extrabold leading-tight text-brand-dark sm:text-4xl">{item.title}</h1>
+        <p className="text-xs font-bold uppercase tracking-wide text-brand-blue">
+          {item.category}
+        </p>
+        <h1 className="mt-3 text-3xl font-extrabold leading-tight text-brand-dark sm:text-4xl">
+          {item.title}
+        </h1>
         <p className="mt-3 text-sm text-brand-body">{date}</p>
 
         {item.featuredImageUrl ? (
           <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-xl bg-brand-light">
-            <Image src={item.featuredImageUrl} alt={item.title} fill className="object-cover" />
+            <Image
+              src={item.featuredImageUrl}
+              alt={item.title}
+              fill
+              className="object-cover"
+            />
           </div>
         ) : null}
 
         <div className="prose prose-neutral mt-10 max-w-none text-brand-body">
           {item.body.split("\n\n").map((para: string, i: number) => (
-            <p key={i} className="mb-5 leading-relaxed">{para}</p>
+            <p key={i} className="mb-5 leading-relaxed">
+              {para}
+            </p>
           ))}
         </div>
 

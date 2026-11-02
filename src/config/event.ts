@@ -117,7 +117,7 @@ export const event = {
     description:
       "Explore building materials, construction equipment and industry solutions at the 12th Nepal Buildcon International Expo 2027, 25–28 February at Bhrikuti Mandap, Kathmandu.",
     ogImage: "/images/home/nepal-buildcon-hero.jpg",
-    logo: "/logos/nepal-buildcon-logo.png",
+    logo: "/logos/12th_Nepal_Buildcon_International_Expo_2027.png",
     locale: "en_US",
     language: "en",
     keywords: [
