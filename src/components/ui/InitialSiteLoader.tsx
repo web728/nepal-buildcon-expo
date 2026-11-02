@@ -1,133 +1,99 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { event } from "@/config/event";
 
+const SESSION_KEY = "nepal_buildcon_intro_shown";
+const INTRO_DURATION_MS = 1400;
+
+/** A short, once-per-tab brand introduction. This is not a loading-progress indicator. */
 export function InitialSiteLoader() {
-  const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
+  // Same markup on the server and the client's first render.
+  const [visible, setVisible] = useState(true);
+  const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
-    // Check if loader has already run in current tab session
-    const hasSeenLoader = sessionStorage.getItem("nepal_buildcon_intro_shown");
-
-    if (hasSeenLoader) {
-      const frame = requestAnimationFrame(() => setLoading(false));
-      return () => cancelAnimationFrame(frame);
+    let previouslySeen = false;
+    try {
+      previouslySeen = sessionStorage.getItem(SESSION_KEY) === "true";
+    } catch {
+      // The intro still works when storage is unavailable.
     }
 
-    const duration = 1400; // 1.4s
-    const interval = 20;
-    const step = 100 / (duration / interval);
+    if (previouslySeen) {
+      setVisible(false);
+      return;
+    }
 
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        const next = prev + step;
-        if (next >= 100) {
-          clearInterval(timer);
-          setTimeout(() => {
-            setLoading(false);
-            sessionStorage.setItem("nepal_buildcon_intro_shown", "true");
-          }, 250);
-          return 100;
-        }
-        return next;
-      });
-    }, interval);
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    if (reduceMotion) {
+      setVisible(false);
+      try { sessionStorage.setItem(SESSION_KEY, "true"); } catch { /* storage disabled */ }
+      return;
+    }
 
-    return () => clearInterval(timer);
+    setAnimate(true);
+    const timer = window.setTimeout(() => {
+      try { sessionStorage.setItem(SESSION_KEY, "true"); } catch { /* storage disabled */ }
+      setVisible(false);
+    }, INTRO_DURATION_MS);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
-  // SSR mismatch prevent karne ke liye
-  if (!loading) return null;
-
   return (
-    <AnimatePresence mode="wait">
-      {loading && (
+    <AnimatePresence initial={false}>
+      {visible && (
         <motion.div
-          key="site-intro-curtain"
-          initial={{ opacity: 1 }}
-          exit={{
-            y: "-100%",
-            transition: {
-              duration: 0.7,
-              ease: [0.76, 0, 0.24, 1],
-            },
-          }}
-          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center overflow-hidden bg-[#201F27] text-white select-none"
+          key="nepal-buildcon-intro"
+          aria-hidden="true"
+          initial={false}
+          exit={{ opacity: 0, y: "-6%", transition: { duration: 0.48, ease: [0.4, 0, 0.2, 1] } }}
+          className="pointer-events-none fixed inset-0 z-[99999] isolate flex items-center justify-center overflow-hidden bg-[#0B0C11] text-white"
         >
-          {/* Ambient Glows */}
-          <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[380px] w-[380px] rounded-full bg-brand-blue/20 blur-[130px]" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[260px] w-[260px] rounded-full bg-brand-green/15 blur-[100px]" />
+          {/* Refined architectural grid and subtle brand glow. */}
+          <div className="absolute inset-0 opacity-[0.055]" style={{
+            backgroundImage: "linear-gradient(to right, white 1px, transparent 1px),linear-gradient(to bottom, white 1px, transparent 1px)",
+            backgroundSize: "54px 54px",
+          }} />
+          <div className="absolute left-1/2 top-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#982E21]/20 blur-[110px] sm:h-[480px] sm:w-[480px]" />
+          <div className="absolute inset-x-0 top-0 h-[3px] bg-[#982E21]" />
 
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 opacity-[0.035]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)",
-                backgroundSize: "36px 36px",
-              }}
-            />
-          </div>
-
-          {/* Capsule Display */}
-          <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-sm w-full">
-            {/* Animated Rings */}
-            <div className="relative flex h-20 w-20 items-center justify-center mb-5">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 rounded-full border border-dashed border-brand-blue/40"
-              />
-              <motion.div
-                animate={{ rotate: -360 }}
-                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-2 rounded-full border border-brand-green/40 border-t-transparent"
-              />
-              <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-white/[0.05] border border-white/10 backdrop-blur-xl shadow-lg">
-                <span className="text-xs font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green">
-                  NP
-                </span>
-              </div>
+          <div className="relative mx-auto flex w-full max-w-[540px] flex-col items-center px-6 text-center">
+            <div className="mb-7 flex h-[76px] w-[76px] items-center justify-center rounded-2xl border border-white/15 bg-white/[0.055] shadow-[0_16px_50px_rgba(0,0,0,0.2)]">
+              <span className="font-heading text-[21px] font-extrabold tracking-[-0.07em] text-[#E6A7A0]">NB<span className="text-white">.</span></span>
             </div>
 
-            {/* Status Pill */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 backdrop-blur-md">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-green animate-pulse" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-300">
-                {event.brandLines?.main || "Connecting Markets"}
-              </span>
+            <div className="mb-4 flex items-center gap-3">
+              <span className="h-px w-7 bg-[#982E21]" />
+              <span className="font-heading text-[10px] font-bold uppercase tracking-[0.26em] text-[#E6A7A0]">12th Edition</span>
+              <span className="h-px w-7 bg-[#982E21]" />
             </div>
 
-            <h1 className="mt-3.5 text-lg sm:text-xl font-extrabold tracking-[-0.02em] text-white">
-              Nepal <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green">Buildcon</span> 2027
-            </h1>
-
-            <p className="mt-1 text-[11px] text-slate-400 font-medium tracking-wide">
-              {event.dates?.display} &bull; {event.venue?.city}
+            <p className="font-heading text-[clamp(1.75rem,5vw,2.8rem)] font-extrabold leading-[1.12] tracking-[-0.055em]">
+              Nepal <span className="text-[#E6A7A0]">Buildcon</span>
+            </p>
+            <p className="mt-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-white/70 sm:text-[13px]">
+              International Expo 2027
+            </p>
+            <p className="mt-5 text-[12px] leading-relaxed text-white/55 sm:text-[13px]">
+              {event.dates.display} <span className="mx-2 text-[#E6A7A0]">·</span> Bhrikuti Mandap, Kathmandu
             </p>
 
-            {/* Progress Bar */}
-            <div className="mt-7 w-full">
-              <div className="relative h-[3px] w-full overflow-hidden rounded-full bg-white/10">
-                <div
-                  style={{ width: `${progress}%` }}
-                  className="h-full bg-gradient-to-r from-brand-blue via-[#D87068] to-brand-green rounded-full shadow-[0_0_12px_rgba(152,46,33,0.8)] transition-all duration-75 ease-out"
-                />
-              </div>
-
-              <div className="mt-2.5 flex items-center justify-between text-[11px] font-mono text-slate-400">
-                <span className="tracking-wider uppercase text-[9px] font-sans font-bold text-slate-500">
-                  Loading Experience
-                </span>
-                <span className="tabular-nums font-semibold text-slate-200">
-                  {Math.round(progress)}%
-                </span>
-              </div>
+            <div className="mt-9 h-[2px] w-44 overflow-hidden rounded-full bg-white/10 sm:w-52">
+              <motion.div
+                className="h-full origin-left bg-[#E6A7A0]"
+                initial={false}
+                animate={{ scaleX: animate ? 1 : 0 }}
+                transition={{ duration: INTRO_DURATION_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
+                style={{ scaleX: 0 }}
+              />
             </div>
+          </div>
+
+          <div className="absolute bottom-7 left-0 right-0 text-center text-[10px] font-medium uppercase tracking-[0.2em] text-white/35">
+            Building · Construction · Infrastructure
           </div>
         </motion.div>
       )}
@@ -135,5 +101,4 @@ export function InitialSiteLoader() {
   );
 }
 
-// Default export fallback
 export default InitialSiteLoader;

@@ -1,18 +1,17 @@
 import type { MetadataRoute } from "next";
-import { event } from "@/config/event";
+
+const SITE_URL = "https://www.nepalbuildcon.com.np";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || event.website).replace(/\/$/, "");
-
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin/", "/api/", "/_next/"],
+        disallow: ["/api/", "/admin/", "/_next/"],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }
