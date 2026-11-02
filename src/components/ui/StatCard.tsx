@@ -1,0 +1,26 @@
+import type { MarketFact } from "@/data/marketFacts";
+
+export function StatCard({ fact }: { fact: MarketFact }) {
+  return (
+    <div className="group relative flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white/90 p-5 shadow-[0_2px_12px_rgb(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-blue/40 hover:shadow-xl hover:shadow-brand-blue/5">
+      <div>
+         
+
+        <p className="mt-3 text-3xl sm:text-4xl font-black tracking-tight text-brand-dark tabular-nums">
+          {fact.value}
+        </p>
+
+        <h3 className="mt-1 text-xs sm:text-sm font-bold tracking-tight text-brand-dark group-hover:text-brand-blue transition-colors">
+          {fact.label}
+        </h3>
+
+        {fact.detail && (
+          <p className="mt-2 text-[11px] sm:text-xs leading-[1.6] text-slate-500 font-normal">
+            {fact.detail}
+          </p>
+        )}
+      </div>
+ 
+    </div>
+  );
+}
