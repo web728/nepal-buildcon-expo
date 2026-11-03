@@ -226,7 +226,7 @@ export function Footer() {
             >
               <span className="relative h-full w-full">
                 <Image
-                  src="/logos/media-space-logo.svg"
+                  src="/logos/media-space-logo.png"
                   alt="Media Space Solutions"
                   fill
                   sizes="130px"

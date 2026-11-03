@@ -151,7 +151,7 @@ export const event = {
     {
       name: "Media Space Solutions Pvt. Ltd.",
       shortName: "Media Space Solutions",
-      logo: "/logos/media-space-logo.svg",
+      logo: "/logos/media-space-logo.png",
       url: "https://mss.com.np/",
     },
   ],

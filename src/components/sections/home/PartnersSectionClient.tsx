@@ -1,7 +1,8 @@
+
 "use client";
 
 import type { ReactNode } from "react";
-import Link from "next/link";
+import Image from "next/image";
 import {
   motion,
   useReducedMotion,
@@ -9,18 +10,20 @@ import {
 } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 
-/* ==========================================
-   MOTION SYSTEM
-========================================== */
-
+const RED = "#982E21";
+const TEAL = "#1C987A";
 const EASE = [0.16, 1, 0.3, 1] as const;
+
+/* =========================
+   SMOOTH ANIMATIONS
+========================= */
 
 const stagger: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.11,
-      delayChildren: 0.07,
+      delayChildren: 0.08,
+      staggerChildren: 0.15,
     },
   },
 };
@@ -28,21 +31,21 @@ const stagger: Variants = {
 const reveal: Variants = {
   hidden: {
     opacity: 0,
-    y: 20,
+    y: 28,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.8,
+      duration: 0.78,
       ease: EASE,
     },
   },
 };
 
-/* ==========================================
-   ELEGANT SVG BACKGROUND
-========================================== */
+/* =========================
+   ANIMATED SVG BACKGROUND
+========================= */
 
 function PartnersBackground() {
   const reduceMotion = useReducedMotion();
@@ -52,128 +55,113 @@ function PartnersBackground() {
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
     >
-      {/* Very subtle dot texture */}
       <div
         className="absolute inset-0 opacity-[0.025]"
         style={{
           backgroundImage:
             "radial-gradient(#111111 1px, transparent 1px)",
-          backgroundSize: "36px 36px",
+          backgroundSize: "38px 38px",
         }}
       />
 
+      <div className="absolute -right-24 -top-32 h-80 w-80 rounded-full bg-[#982E21]/[0.035] blur-[85px]" />
+
+      <div className="absolute -bottom-40 -left-20 h-80 w-80 rounded-full bg-[#1C987A]/[0.035] blur-[90px]" />
+
       <svg
-        viewBox="0 0 1440 760"
-        preserveAspectRatio="xMidYMid slice"
-        fill="none"
         className="absolute inset-0 h-full w-full"
+        viewBox="0 0 1440 620"
+        fill="none"
+        preserveAspectRatio="xMidYMid slice"
       >
-        {/* Upper-right architectural drawing */}
-        <motion.g
-          style={{ transformOrigin: "1430px 80px" }}
+        <motion.circle
+          cx="1420"
+          cy="35"
+          r="220"
+          stroke={RED}
+          strokeWidth="0.9"
+          strokeOpacity="0.10"
+          strokeDasharray="7 15"
+          style={{
+            transformOrigin: "1420px 35px",
+          }}
           animate={
             reduceMotion
               ? undefined
-              : { rotate: [0, 8, 0] }
+              : { rotate: [0, 14, 0] }
           }
           transition={{
-            duration: 28,
+            duration: 32,
             ease: "easeInOut",
             repeat: Infinity,
           }}
-        >
-          <circle
-            cx="1430"
-            cy="80"
-            r="185"
-            stroke="#BE202B"
-            strokeWidth="1"
-            strokeOpacity="0.12"
-            strokeDasharray="6 13"
-          />
-
-          <circle
-            cx="1430"
-            cy="80"
-            r="270"
-            stroke="#111111"
-            strokeWidth="0.8"
-            strokeOpacity="0.055"
-          />
-
-          <circle
-            cx="1430"
-            cy="80"
-            r="350"
-            stroke="#25B34B"
-            strokeWidth="0.8"
-            strokeOpacity="0.09"
-            strokeDasharray="10 18"
-          />
-        </motion.g>
-
-        {/* Bottom-left structural arcs */}
-        <circle
-          cx="-50"
-          cy="750"
-          r="210"
-          stroke="#BE202B"
-          strokeOpacity="0.08"
         />
 
         <circle
-          cx="-50"
-          cy="750"
-          r="295"
-          stroke="#111111"
-          strokeOpacity="0.045"
-          strokeDasharray="7 14"
+          cx="1420"
+          cy="35"
+          r="305"
+          stroke={TEAL}
+          strokeWidth="0.8"
+          strokeOpacity="0.075"
         />
 
-        {/* Thin, continuously moving wave paths */}
-        {Array.from({ length: 5 }).map((_, i) => {
-          const first =
-            `M-100,${440 + i * 20} ` +
-            `C270,${365 + i * 12} ` +
-            `600,${575 - i * 7} ` +
-            `950,${450 + i * 8} ` +
-            `C1210,${370 + i * 8} ` +
-            `1410,${510 - i * 6} ` +
-            `1550,${445 + i * 7}`;
+        <motion.circle
+          cx="-40"
+          cy="590"
+          r="245"
+          stroke={RED}
+          strokeOpacity="0.085"
+          strokeDasharray="5 13"
+          animate={
+            reduceMotion
+              ? undefined
+              : {
+                  strokeDashoffset: [0, -180],
+                }
+          }
+          transition={{
+            duration: 32,
+            ease: "linear",
+            repeat: Infinity,
+          }}
+        />
 
-          const second =
-            `M-100,${460 + i * 20} ` +
-            `C290,${400 + i * 11} ` +
-            `620,${550 - i * 7} ` +
-            `970,${470 + i * 8} ` +
-            `C1200,${410 + i * 8} ` +
-            `1420,${490 - i * 6} ` +
-            `1550,${465 + i * 7}`;
+        {Array.from({ length: 3 }, (_, i) => {
+          const start =
+            `M-100 ${350 + i * 28} ` +
+            `C330 ${250 + i * 12}, ` +
+            `640 ${450 - i * 10}, ` +
+            `980 ${340 + i * 15} ` +
+            `S1400 ${420 - i * 10}, ` +
+            `1550 ${335 + i * 14}`;
+
+          const end =
+            `M-100 ${370 + i * 28} ` +
+            `C340 ${290 + i * 12}, ` +
+            `630 ${420 - i * 10}, ` +
+            `970 ${365 + i * 15} ` +
+            `S1400 ${390 - i * 10}, ` +
+            `1550 ${355 + i * 14}`;
 
           return (
             <motion.path
               key={i}
-              d={first}
-              stroke={
-                i % 3 === 0
-                  ? "#BE202B"
-                  : i % 3 === 1
-                    ? "#25B34B"
-                    : "#111111"
-              }
-              strokeOpacity="0.075"
+              d={start}
+              stroke={i % 2 ? TEAL : RED}
               strokeWidth="0.8"
+              strokeOpacity="0.055"
               animate={
                 reduceMotion
                   ? undefined
                   : {
-                      d: [first, second, first],
+                      d: [start, end, start],
                     }
               }
               transition={{
-                duration: 22 + i * 2,
-                repeat: Infinity,
+                duration: 23 + i * 3,
                 ease: "easeInOut",
+                repeat: Infinity,
               }}
             />
           );
@@ -183,247 +171,166 @@ function PartnersBackground() {
   );
 }
 
-/* ==========================================
-   SHARED SECTION LABEL
-========================================== */
-
-function SectionLabel({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  return (
-    <div className="flex items-center gap-3">
-      <span className="h-[2px] w-7 bg-[#BE202B]" />
-
-      <span className="text-[10px] font-extrabold uppercase tracking-[0.17em] text-[#BE202B] sm:text-[11px]">
-        {children}
-      </span>
-    </div>
-  );
-}
-
-/* ==========================================
-   MAIN PARTNERS SECTION
-========================================== */
+/* =========================
+   PROPS
+========================= */
 
 type Props = {
   organiserLogos: ReactNode;
-  partnerLogos: ReactNode[];
+  partnerLogos?: ReactNode[];
 };
+
+/* =========================
+   PREMIUM PARTNERS SECTION
+========================= */
 
 export function PartnersSectionClient({
   organiserLogos,
-  partnerLogos,
 }: Props) {
   const reduceMotion = useReducedMotion();
-  const hasPartners = partnerLogos.length > 0;
-
-  const viewport = {
-    once: true,
-    margin: "-50px",
-  };
 
   return (
     <section
       aria-labelledby="partners-heading"
-      className="relative isolate overflow-hidden border-b border-[#111111]/10 bg-white py-16 text-[#111111] selection:bg-[#BE202B] selection:text-white sm:py-[76px] lg:py-[84px]"
+      className="relative isolate overflow-hidden border-b border-[#111111]/[0.08] bg-white py-16 text-[#111111] selection:bg-[#982E21] selection:text-white sm:py-20 lg:py-24"
     >
       <PartnersBackground />
 
       <Container className="relative z-10">
-        {/* =====================================
-            CENTERED SECTION HEADING
-        ===================================== */}
-
         <motion.div
           variants={stagger}
-          initial={reduceMotion ? false : "hidden"}
+          initial={
+            reduceMotion ? false : "hidden"
+          }
           whileInView="visible"
-          viewport={viewport}
-          className="mx-auto max-w-[760px] text-center"
+          viewport={{
+            once: true,
+            amount: 0.15,
+            margin: "0px 0px -45px 0px",
+          }}
+          className="mx-auto flex w-full max-w-[920px] flex-col items-center text-center"
         >
-          <motion.div
-            variants={reveal}
-            className="flex justify-center"
-          >
-            <SectionLabel>
-              Behind the Exhibition
-            </SectionLabel>
-          </motion.div>
+          {/* ORGANISERS HEADING */}
 
           <motion.h2
             id="partners-heading"
             variants={reveal}
-            className="mt-5 text-[clamp(2rem,3.5vw,3.5rem)] font-black leading-[1.12] tracking-[-0.045em] text-[#111111]"
+            className="text-[clamp(1.65rem,3vw,2.5rem)] font-extrabold leading-[1.15] tracking-[-0.035em] text-[#171717]"
           >
-            Our Organisers
-            <span className="block text-[#BE202B]">
-              &amp; Strategic Partners.
+            Our{" "}
+            <span className="text-[#982E21]">
+              Organisers
             </span>
           </motion.h2>
 
-          <motion.p
-            variants={reveal}
-            className="mx-auto mt-4 max-w-[630px] text-[13px] leading-[1.85] text-[#666666] sm:text-[15px]"
-          >
-            Bringing together international exhibition
-            expertise and local industry knowledge to
-            create meaningful business opportunities
-            across Nepal&apos;s construction and building
-            materials sector.
-          </motion.p>
+          {/* HEADING ACCENT */}
 
-          {/* Animated red / green underline */}
           <motion.div
+            variants={reveal}
             aria-hidden="true"
-            className="mx-auto mt-6 flex h-[3px] w-24 origin-center overflow-hidden"
-            initial={
+            className="mt-4 flex h-[3px] w-20 overflow-hidden rounded-full"
+          >
+            <span className="w-[72%] bg-[#982E21]" />
+            <span className="flex-1 bg-[#1C987A]" />
+          </motion.div>
+
+          {/* EXISTING ORGANISER LOGOS */}
+
+          <motion.div
+            variants={reveal}
+            whileHover={
               reduceMotion
-                ? false
-                : { scaleX: 0 }
+                ? undefined
+                : { y: -4 }
             }
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
             transition={{
-              duration: 0.9,
-              delay: 0.2,
+              duration: 0.35,
               ease: EASE,
             }}
+            className="group mt-7 flex w-full max-w-[820px] items-center justify-center rounded-2xl border border-[#111111]/[0.07] bg-white/85 px-4 py-7 shadow-[0_8px_28px_rgba(17,17,17,0.035)] transition-[border-color,box-shadow,background-color] duration-300 hover:border-[#982E21]/20 hover:bg-white hover:shadow-[0_18px_44px_rgba(17,17,17,0.075)] sm:mt-9 sm:px-9 sm:py-9"
           >
-            <span className="h-full w-[75%] bg-[#BE202B]" />
-            <span className="h-full flex-1 bg-[#25B34B]" />
-          </motion.div>
-        </motion.div>
-
-        {/* =====================================
-            ORGANISERS SPOTLIGHT
-        ===================================== */}
-
-        <motion.div
-          initial={
-            reduceMotion
-              ? false
-              : {
-                  opacity: 0,
-                  y: 24,
-                }
-          }
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={viewport}
-          transition={{
-            duration: 0.85,
-            ease: EASE,
-          }}
-          className="relative mt-10 overflow-hidden rounded-xl border border-[#111111]/10 bg-white shadow-[0_16px_45px_rgba(17,17,17,0.045)]"
-        >
-          {/* Top accent */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-0 top-0 flex h-[3px]"
-          >
-            <span className="w-[76%] bg-[#BE202B]" />
-            <span className="w-[18%] bg-[#25B34B]" />
-            <span className="flex-1 bg-[#111111]" />
-          </div>
-
-          {/* Organiser information */}
-          <div className="px-6 pb-7 pt-9 text-center sm:px-10 sm:pb-9 sm:pt-10">
-            <span className="text-[10px] font-extrabold uppercase tracking-[0.19em] text-[#BE202B]">
-              Official Joint Organisers
-            </span>
-
-            <h3 className="mt-3 text-[21px] font-black leading-[1.3] tracking-[-0.03em] text-[#111111] sm:text-[26px]">
-              Futurex Trade Fair &amp; Events
-              <span className="mx-2 font-medium text-[#111111]/25">
-                &amp;
-              </span>
-              <span className="block sm:inline">
-                Media Space Solutions
-              </span>
-            </h3>
-
-            <p className="mx-auto mt-3 max-w-[620px] text-[13px] leading-[1.75] text-[#777777]">
-              Combining international exhibition
-              experience with local Nepal market
-              knowledge to connect manufacturers,
-              suppliers, construction professionals
-              and trade buyers.
-            </p>
-          </div>
-
-          {/* Premium logo presentation area */}
-          <div className="border-t border-[#111111]/[0.07] bg-[#FAFAFA] px-5 py-8 sm:px-10 sm:py-10 lg:px-16 lg:py-11">
-            <div className="mx-auto flex min-h-[100px] w-full max-w-[780px] items-center justify-center">
+            <div className="flex min-h-[80px] w-full max-w-[760px] items-center justify-center">
               {organiserLogos}
             </div>
-          </div>
+          </motion.div>
 
-          {/* Event signature */}
-          <div className="flex flex-col items-center justify-center gap-2 border-t border-[#111111]/[0.07] bg-white px-5 py-4 sm:flex-row sm:gap-3">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#25B34B]" />
+          {/* MINIMAL DIVIDER */}
 
-            <span className="text-center text-[10px] font-bold uppercase tracking-[0.13em] text-[#777777]">
-              Nepal Buildcon International Expo 2027
-            </span>
-          </div>
-        </motion.div>
+          <motion.div
+            variants={reveal}
+            aria-hidden="true"
+            className="my-11 h-px w-full max-w-[480px] bg-gradient-to-r from-transparent via-[#111111]/15 to-transparent sm:my-14"
+          />
 
-  
+          {/* SUPPORTED BY HEADING */}
 
-        {/* =====================================
-            PARTNERSHIP CTA
-        ===================================== */}
-
-        <motion.div
-          initial={
-            reduceMotion
-              ? false
-              : { opacity: 0, y: 18 }
-          }
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={viewport}
-          transition={{
-            duration: 0.8,
-            ease: EASE,
-          }}
-          className="mt-10 flex flex-col gap-5 border-t border-[#111111]/10 pt-8 sm:flex-row sm:items-center sm:justify-between"
-        >
-          <div>
-            <SectionLabel>
-              Let&apos;s Build Connections
-            </SectionLabel>
-
-            <h3 className="mt-3 text-lg font-extrabold tracking-[-0.025em] text-[#111111] sm:text-xl">
-              Interested in partnering with the expo?
-            </h3>
-
-            <p className="mt-2 max-w-[600px] text-[13px] leading-[1.75] text-[#777777]">
-              Connect with our team to explore
-              partnership opportunities at Nepal
-              Buildcon International Expo 2027.
-            </p>
-          </div>
-
-          <Link
-            href="/contact"
-            className="group inline-flex min-h-[45px] shrink-0 items-center justify-center gap-3 self-start rounded-md border border-[#BE202B] bg-[#BE202B] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.07em] text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#A71B25] sm:self-center"
+          <motion.h3
+            variants={reveal}
+            className="text-[clamp(1.45rem,2.5vw,2rem)] font-extrabold leading-[1.2] tracking-[-0.03em] text-[#171717]"
           >
-            Partner With Us
+            Supported{" "}
+            <span className="text-[#982E21]">
+              By
+            </span>
+          </motion.h3>
+
+          {/* SUPPORTER ACCENT */}
+
+          <motion.div
+            variants={reveal}
+            aria-hidden="true"
+            className="mt-3 flex h-[3px] w-16 overflow-hidden rounded-full"
+          >
+            <span className="w-[72%] bg-[#982E21]" />
+            <span className="flex-1 bg-[#1C987A]" />
+          </motion.div>
+
+          {/* LAMINAR LOGO WITH LINK */}
+
+          <motion.a
+            variants={reveal}
+            href="https://laminartiles.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit Laminar Tiles website (opens in a new tab)"
+            whileHover={
+              reduceMotion
+                ? undefined
+                : {
+                    y: -5,
+                    scale: 1.025,
+                  }
+            }
+            whileTap={
+              reduceMotion
+                ? undefined
+                : { scale: 0.985 }
+            }
+            transition={{
+              duration: 0.32,
+              ease: EASE,
+            }}
+            className="group relative mt-6 flex min-h-[126px] w-full max-w-[340px] items-center justify-center rounded-2xl border border-[#111111]/[0.07] bg-white/90 px-6 py-5 shadow-[0_8px_28px_rgba(17,17,17,0.035)] outline-none transition-[border-color,box-shadow] duration-300 hover:border-[#982E21]/25 hover:shadow-[0_20px_44px_rgba(17,17,17,0.09)] focus-visible:ring-2 focus-visible:ring-[#982E21] focus-visible:ring-offset-4 sm:min-h-[148px] sm:max-w-[390px]"
+          >
+            <div className="relative h-[86px] w-full max-w-[280px] sm:h-[102px] sm:max-w-[310px]">
+              <Image
+                src="/logos/laminar.png"
+                alt="Laminar Tiles"
+                fill
+                sizes="(max-width: 540px) 210px, 280px"
+                className="object-contain"
+              />
+            </div>
+
+            {/* HOVER ARROW */}
 
             <span
               aria-hidden="true"
-              className="text-base transition-transform duration-300 group-hover:translate-x-1"
+              className="absolute bottom-3 right-3 text-[#982E21]/45 opacity-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100"
             >
               ↗
             </span>
-          </Link>
+          </motion.a>
         </motion.div>
       </Container>
     </section>

@@ -310,6 +310,9 @@ export default function HomePage() {
         {/* 03 — About Buildcon */}
         <IntroSection />
 
+               {/* 10 — Partners */}
+        <PartnersSection />
+
         {/* 04 — Why Nepal */}
         <WhyNepalSection />
 
@@ -328,8 +331,7 @@ export default function HomePage() {
         {/* 09 — Official Venue */}
         {/* <VenueSection /> */}
 
-        {/* 10 — Partners */}
-        {/* <PartnersSection /> */}
+ 
 
       
 
