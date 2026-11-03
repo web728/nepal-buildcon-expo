@@ -71,7 +71,7 @@ export function GalleryGrid({ items }: Props) {
             <div className="mb-4 flex items-center gap-3 sm:mb-5">
               <span className="h-5 w-[3px] rounded-full bg-[#982E21]" />
               <h2 className="text-base font-bold tracking-[-0.02em] text-[#171717] sm:text-lg">
-                {readableDate(group.date)}
+               Previous Edition
               </h2>
               <div className="h-px flex-1 bg-[#111111]/10" />
             </div>
